@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+#cocos-engine
+proj.win32/engine
+
+#ipch
+proj.win32/ipch

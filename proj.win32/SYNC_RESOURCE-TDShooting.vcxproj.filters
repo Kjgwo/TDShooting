@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\201710911\Documents\cocos_game\TDShooting\proj.win32\CMakeFiles\caa10b1cdb10a17d41cc89b3240fbdca\SYNC_RESOURCE-TDShooting.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\201710911\Documents\cocos_game\TDShooting\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\201710911\Documents\cocos_game\TDShooting\proj.win32\CMakeFiles\SYNC_RESOURCE-TDShooting" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{909B504B-769A-3CA5-A3CC-DC481A3B2782}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
