@@ -1,3 +1,4 @@
-﻿  HelloWorldScene.cpp
+﻿  SceneIngame.cpp
+..\Classes\SceneIngame.cpp(31): warning C4305: 'argument': truncation from 'double' to 'float'
   TDShooting.vcxproj -> C:\Users\201710911\Documents\cocos_game\TDShooting\proj.win32\bin\TDShooting\Debug\TDShooting.exe
   TDShooting.vcxproj -> C:/Users/201710911/Documents/cocos_game/TDShooting/proj.win32/bin/TDShooting/Debug/TDShooting.pdb (Full PDB)

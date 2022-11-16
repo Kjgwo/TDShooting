@@ -5,10 +5,10 @@
 
 class Unit : public Node {
 private:
-	PhysicsBody* body;
 	float hp = 100;
 protected:
 	Sprite* spr;
+	PhysicsBody* body;
 public:
 	static Unit* create(const Size& size, int bitmask, int tag); // 충돌판정 크기때문에 유닛의 사이즈 필요
 	virtual bool init(const Size& size, int bitmask, int tag);
@@ -26,6 +26,8 @@ class Player : public Unit {
 public:
 	static Player* create();
 	virtual bool init();
+
+	virtual void removeFromParent() override;
 };
 
 
@@ -34,5 +36,6 @@ public:
 	static Enemy* create();
 	virtual bool init();
 
+	virtual void removeFromParent() override;
 };
 #endif

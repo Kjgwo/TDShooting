@@ -21,9 +21,12 @@ public:
 	void onKeyPressed(EventKeyboard::KeyCode c, Event* e);
 	void onKeyReleased(EventKeyboard::KeyCode c, Event* e);
 
-
+	// true 리턴시 개체 폭파
+	bool collision(Unit* u, float damage);
 	bool onContactBegin(PhysicsContact& contact);
+
 	void logic(float dt);
+	void fireLogic(float dt);
 
 };
 #endif

@@ -1,7 +1,7 @@
 #ifndef __ENVIRONMENT_H__
 #define __ENVIRONMENT_H__
 
-#define DEBUG_MODE true
+#define DEBUG_MODE false
 
 #define PLAYER_MOVEMENT_SPEDD 400
 #define ENEMY_BULLET_SPEED 500

@@ -28,6 +28,7 @@ bool SceneIngame::init()
 
 
 	schedule(CC_SCHEDULE_SELECTOR(SceneIngame::logic));
+	schedule(CC_SCHEDULE_SELECTOR(SceneIngame::fireLogic), 0.1);
 
 	return true;
 }
@@ -49,21 +50,18 @@ void SceneIngame::onEnter()
 		auto enemy = Enemy::create();
 		enemy->addComponent(EnemyAttackRoutine::create(EnemyAttackType::NORMAL));
 		enemy->addComponent(EnemyMovementRoutine::create(EnemyMovementType::FROM_TOP));
-		enemy->setPosition(Vec2(1280 / 2, 720 / 2 + 200));
 		addChild(enemy);
 	}
 	{
 		auto enemy = Enemy::create();
 		enemy->addComponent(EnemyAttackRoutine::create(EnemyAttackType::DOUBLE));
 		enemy->addComponent(EnemyMovementRoutine::create(EnemyMovementType::FROM_LEFT));
-		enemy->setPosition(Vec2(1280 / 2 - 300, 720 / 2 + 200));
 		addChild(enemy);
 	}
 	{
 		auto enemy = Enemy::create();
 		enemy->addComponent(EnemyAttackRoutine::create(EnemyAttackType::TRIPLE));
 		enemy->addComponent(EnemyMovementRoutine::create(EnemyMovementType::FROM_RIGHT));
-		enemy->setPosition(Vec2(1280 / 2 + 300, 720 / 2 + 200));
 		addChild(enemy);
 	}
 
@@ -98,6 +96,16 @@ void SceneIngame::onKeyReleased(EventKeyboard::KeyCode c, Event * e)
 	}
 }
 
+bool SceneIngame::collision(Unit * u, float damage)
+{
+	u->addHP(-damage);
+	if (u->isHPZero()) {
+		u->removeFromParent();
+		return true;
+	}
+	return false;
+}
+
 bool SceneIngame::onContactBegin(PhysicsContact & contact)
 {
 	int tagA = contact.getShapeA()->getBody()->getTag();
@@ -110,29 +118,35 @@ bool SceneIngame::onContactBegin(PhysicsContact & contact)
 	if (b == nullptr) return true;
 
 	if (tagA == TAG_PLAYER_BULLET && tagB == TAG_ENEMY) {
-		b->removeFromParent();
-	}
-	if (tagB == TAG_ENEMY_BULLET && tagA == TAG_ENEMY) {
+		this->collision((Unit*)b, 25);
 		a->removeFromParent();
+	}
+	if (tagB == TAG_PLAYER_BULLET && tagA == TAG_ENEMY) {
+		this->collision((Unit*)a, 25);
+		b->removeFromParent();
 	}
 
 	if (tagA == TAG_PLAYER && tagB == TAG_ENEMY) {
-		a->removeFromParent();
-		player = nullptr;
+		bool dead = this->collision((Unit*)a, 50);
+		if(dead) player = nullptr;
+		this->collision((Unit*)b, 100);
 	}
 
 	if (tagB == TAG_PLAYER && tagA == TAG_ENEMY) {
-		b->removeFromParent();
-		player = nullptr;
+		bool dead = this->collision((Unit*)b, 50);
+		if (dead) player = nullptr;
+		this->collision((Unit*)a, 100);
 	}
 
 	if (tagA == TAG_PLAYER && tagB == TAG_ENEMY_BULLET) {
-		a->removeFromParent();
-		player = nullptr;
+		bool dead = this->collision((Unit*)a, 100);
+		if (dead) player = nullptr;
+		b->removeFromParent();
 	}
 	if (tagB == TAG_PLAYER && tagA == TAG_ENEMY_BULLET) {
-		b->removeFromParent();
-		player = nullptr;
+		bool dead = this->collision((Unit*)b, 100);
+		if (dead) player = nullptr;
+		a->removeFromParent();
 	}
 
 
@@ -154,13 +168,17 @@ void SceneIngame::logic(float dt)
 
 	player->setPosition(pos);
 
+}
+
+void SceneIngame::fireLogic(float dt)
+{
+	if (!player) return;
 
 	if (fire) {
 		auto bullet = Bullet::create(PLAYER_BULLET_MASK, TAG_PLAYER_BULLET);
-		bullet->setPosition(player->getPosition());
+		bullet->setPosition(player->getPosition() + Vec2(0, 60));
 		bullet->getBody()->setVelocity(Vec2(0, 1000)); // setVeloctiy(): 속도 계산
 		bullet->runAction(Sequence::create(DelayTime::create(1.0f), RemoveSelf::create(), nullptr));
 		addChild(bullet);
 	}
-
 }

@@ -6,6 +6,7 @@
 class Bullet :public Node {
 private:
 	PhysicsBody* body;
+	Sprite* spr;
 public:
 	static Bullet* create(int bitmask, int tag);
 	virtual bool init(int bitmask, int tag); // 파라미터가 있기에 override X

@@ -84,6 +84,23 @@ bool Player::init()
 	return true;
 }
 
+void Player::removeFromParent()
+{
+	Sprite* effect = Sprite::create("res/Damage/playerShip1_damage1.png");
+	Animation* animation = Animation::create();
+	animation->addSpriteFrameWithFile("res/Damage/playerShip1_damage1.png");
+	animation->addSpriteFrameWithFile("res/Damage/playerShip1_damage2.png");
+	animation->addSpriteFrameWithFile("res/Damage/playerShip1_damage3.png");
+	animation->setDelayPerUnit(0.125f);
+	Animate* animate = Animate::create(animation);
+	effect->runAction(Sequence::create(animate, RemoveSelf::create(), nullptr)); // RemoveSelf: effect sprite 삭제
+	effect->setPosition(getPosition());
+
+	Director::getInstance()->getRunningScene()->addChild(effect);
+	
+	Node::removeFromParent(); // Player 개체 삭제
+}
+
 Enemy * Enemy::create()
 {
 	auto ret = new Enemy();
@@ -102,4 +119,15 @@ bool Enemy::init()
 	setHP(50);
 
 	return true;
+}
+
+void Enemy::removeFromParent()
+{
+	removeComponent(body);
+	body = nullptr;
+	runAction(Sequence::create(
+		Spawn::create(FadeOut::create(0.5f), ScaleTo::create(0.5, 0.0f), nullptr),
+		RemoveSelf::create(),
+		nullptr
+	));
 }
